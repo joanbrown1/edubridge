@@ -50,7 +50,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
             EduBridge
           </h1>
           <h2 className="text-xl md:text-2xl text-muted-foreground font-light">
-            AI Summarizer for Complex Content
+            Study Less. Understand More.
           </h2>
         </motion.div>
 
@@ -61,7 +61,8 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
           transition={{ delay: 0.6, duration: 0.8 }}
           className="text-lg md:text-xl mb-8 max-w-2xl bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent"
         >
-          Turn complex notes into simple learning tools.
+          With EduBridge, complex topics become simple, engaging, and
+          unforgettable—helping you learn smarter, not harder
         </motion.p>
 
         {/* CTA Button */}
@@ -94,8 +95,9 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                 Smart Summaries
               </h3>
               <p className="text-muted-foreground">
-                AI-powered condensation of complex content into digestible
-                insights.
+                Skip the overwhelm. Our AI condenses dense textbooks and
+                articles into clear, bite-sized insights you can grasp in
+                minutes
               </p>
             </div>
           </GlassCard>
@@ -107,7 +109,8 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                 Interactive Quizzes
               </h3>
               <p className="text-muted-foreground">
-                Test your understanding with automatically generated questions.
+                No more passive reading. Reinforce your knowledge instantly with
+                auto-generated quizzes tailored to your content.
               </p>
             </div>
           </GlassCard>
@@ -119,7 +122,8 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                 Dynamic Flashcards
               </h3>
               <p className="text-muted-foreground">
-                3D animated cards for effective spaced repetition learning.
+                Retain smarter, not harder. Engage with stunning 3D flashcards
+                designed for spaced repetition and long-term memory.
               </p>
             </div>
           </GlassCard>
