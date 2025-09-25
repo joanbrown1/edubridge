@@ -2,13 +2,25 @@ import React, { useEffect, useState } from "react";
 import { GlassCard } from "../components/GlassCard";
 import { GlowingButton } from "../components/GlowingButton";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileText, HelpCircle, Layers, RotateCcw } from "lucide-react";
+import { FileText, HelpCircle, Layers } from "lucide-react";
+
+interface QuizItem {
+  question: string;
+  options: string[];
+  correctIndex: number;
+  explanation?: string;
+}
+
+interface FlashcardItem {
+  front: string;
+  back: string;
+}
 
 interface HistoryItem {
   id: string;
   summary: string;
-  quiz: any[];
-  flashcards: any[];
+  quiz: QuizItem[];
+  flashcards: FlashcardItem[];
   originalText: string;
   level: string;
   createdAt: string;
@@ -19,13 +31,12 @@ interface HistoryPageProps {
   token?: string | null;
 }
 
-export default function HistoryPage({ onNavigate, token }: HistoryPageProps) {
+export default function HistoryPage({ onNavigate }: HistoryPageProps) {
   const [items, setItems] = useState<HistoryItem[]>([]);
   const [activeItem, setActiveItem] = useState<HistoryItem | null>(null);
   const [activeTab, setActiveTab] = useState("summary");
   const [currentCard, setCurrentCard] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -41,10 +52,30 @@ export default function HistoryPage({ onNavigate, token }: HistoryPageProps) {
         }
       );
       const data = await res.json();
-      if (data.success) setItems(data.items);
+
+      if (data.success) {
+        const parsed = data.items.map((item: any) => ({
+          ...item,
+          quiz: safeParseArray(item.quiz),
+          flashcards: safeParseArray(item.flashcards),
+        }));
+        setItems(parsed);
+      }
     };
+
     fetchHistory();
   }, [onNavigate]);
+
+  const safeParseArray = (val: any) => {
+    try {
+      if (!val) return [];
+      if (Array.isArray(val)) return val;
+      return JSON.parse(val);
+    } catch (e) {
+      console.error("Failed to parse JSON:", val, e);
+      return [];
+    }
+  };
 
   if (!activeItem) {
     return (
@@ -73,7 +104,6 @@ export default function HistoryPage({ onNavigate, token }: HistoryPageProps) {
     );
   }
 
-  // Active item view like ResultsPage
   const tabs = [
     { id: "summary", label: "Summary", icon: FileText },
     {
@@ -181,7 +211,7 @@ export default function HistoryPage({ onNavigate, token }: HistoryPageProps) {
                 <div key={i} className="mb-4">
                   <p className="font-medium mb-2">{q.question}</p>
                   <ul className="space-y-1 text-slate-400">
-                    {q.options.map((opt: string, idx: number) => (
+                    {q.options.map((opt, idx) => (
                       <li key={idx}>
                         {String.fromCharCode(65 + idx)}. {opt}
                         {idx === q.correctIndex && (
